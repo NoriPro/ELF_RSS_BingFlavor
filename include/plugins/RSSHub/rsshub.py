@@ -14,7 +14,7 @@ import difflib
 import logging
 from nonebot.log import logger
 from . import RSS_class
-from googletrans import Translator
+import translators
 import emoji
 # 存储目录
 file_path = './data/'
@@ -156,12 +156,12 @@ def checkstr(rss_str:str,img_proxy:bool,translation:bool)->str:
     # 翻译
     text = ''
     if translation:
-        translator = Translator()
+        translator = translators()
         # rss_str_tl = re.sub(r'\n', ' ', rss_str_tl)
         try:
             text=emoji.demojize(rss_str_tl)
             text = re.sub(r':[A-Za-z_]*:', ' ', text)
-            text = '\n翻译：\n' + translator.translate(re.escape(text), dest='zh-CN').text
+            text = '\n翻译：\n' + translator.alibaba(re.escape(text), 'auto', 'zh-CN').text
             text = re.sub(r'\\', '', text)
         except Exception as e:
             text = '\n翻译失败！'+str(e)+'\n'
